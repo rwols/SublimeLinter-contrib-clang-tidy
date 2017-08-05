@@ -1,7 +1,7 @@
 SublimeLinter-contrib-clang-tidy
 ================================
 
-[![Build Status](https://travis-ci.org/SublimeLinter/SublimeLinter-contrib-clang-tidy.svg?branch=master)](https://travis-ci.org/SublimeLinter/SublimeLinter-contrib-clang-tidy)
+[![Build Status](https://travis-ci.org/rwols/SublimeLinter-contrib-clang-tidy.svg?branch=master)](https://travis-ci.org/rwols/SublimeLinter-contrib-clang-tidy)
 
 This linter plugin for [SublimeLinter][docs] provides an interface to [clang-tidy][clang-tidy]. It will be used with files that have the __C__, __C++__, __Objective-C__ or __Objective-C++__ syntax.
 
