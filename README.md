@@ -58,7 +58,7 @@ following entry to your `.sublime-project`**:
     "settings":
     {
         // ...
-        "compile_commands": ${project_path}/PATH/TO/YOUR/BUILD/DIR
+        "compile_commands": "${project_path}/PATH/TO/YOUR/BUILD/DIR"
         // ...
     }
 }
