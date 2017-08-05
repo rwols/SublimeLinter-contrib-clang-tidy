@@ -84,6 +84,9 @@ you open a source file or when you save a source file. The clang-tidy linter
 **will not lint when you edit the file**. It will only lint **during load and
 save**.
 
+## Recommended Other Plugins
+- [Clang Format](https://packagecontrol.io/packages/Clang%20Format)
+
 ## Contributing
 If you would like to contribute enhancements or fixes, please do the following:
 
