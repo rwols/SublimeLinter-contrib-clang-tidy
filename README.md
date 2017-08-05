@@ -49,7 +49,7 @@ you invoke `cmake`.
 In order to let this plugin know where the compilation database is, **add the
 following entry to your `.sublime-project`**:
 
-```json
+```javascript
 {
     "folders":
     [
