@@ -21,6 +21,10 @@ $ sudo apt install clang-tidy  # Ubuntu 16.04
 ```
 2. Make sure you have a **compilation database** for your project (see the
    section *Settings*)
+3. Make sure you have a `.clang-tidy` configuration file for your project.
+   The `.clang-tidy` file should live **at the root of your project**. Please
+   [read this blog post](http://www.labri.fr/perso/fleury/posts/programming/using-clang-tidy-and-clang-format.html) to learn how to create a `.clang-tidy`
+   file.
 
 **Note:** This plugin requires `clang-tidy` __1.0__ or later.
 
