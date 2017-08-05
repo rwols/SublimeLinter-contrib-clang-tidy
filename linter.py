@@ -42,6 +42,7 @@ class ClangTidy(Linter):
     word_re = r'^([-\w:#]+)'
 
     def cmd(self):
+        """Return the actual command to invoke."""
         settings = self.view.settings()
         compile_commands = settings.get("compile_commands", "")
         vars = self.view.window().extract_variables()
@@ -49,4 +50,7 @@ class ClangTidy(Linter):
         compdb = os.path.join(compile_commands, "compile_commands.json")
         if not os.path.isfile(compdb):
             return None
-        return [self.executable, "-p={}".format(compile_commands), "-config=", self.view.file_name()]
+        return [self.executable,
+                "-p={}".format(compile_commands),
+                "-config=",
+                self.view.file_name()]
