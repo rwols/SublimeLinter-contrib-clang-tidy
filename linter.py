@@ -45,12 +45,21 @@ class ClangTidy(Linter):
         """Return the actual command to invoke."""
         settings = self.view.settings()
         compile_commands = settings.get("compile_commands", "")
+        if not compile_commands:
+            print("SublimeLinter-contrib-clang-tidy: error: no "
+                  '"compile_commands" key present in the settings of the '
+                  "view.")
+            return [self.executable, "-version"]
         vars = self.view.window().extract_variables()
         compile_commands = sublime.expand_variables(compile_commands, vars)
         compdb = os.path.join(compile_commands, "compile_commands.json")
-        if not os.path.isfile(compdb):
-            return None
-        return [self.executable,
-                "-p={}".format(compile_commands),
-                "-config=",
-                self.view.file_name()]
+        if os.path.isfile(compdb):
+            return [self.executable,
+                    "-quiet",
+                    "-p={}".format(compile_commands),
+                    "-config=",
+                    self.view.file_name()]
+        else:
+            print("SublimeLinter-contrib-clang-tidy: error: "
+                  '"{}" is not a compilation database.'.format(compdb))
+            return [self.executable, "-version"]
