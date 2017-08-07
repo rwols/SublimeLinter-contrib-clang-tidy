@@ -21,6 +21,10 @@ $ sudo apt install clang-tidy  # Ubuntu 16.04
 ```
 2. Make sure you have a **compilation database** for your project (see the
    section *Settings*)
+3. Make sure you have a `.clang-tidy` configuration file for your project.
+   The `.clang-tidy` file should live **at the root of your project**. Please
+   [read this blog post](http://www.labri.fr/perso/fleury/posts/programming/using-clang-tidy-and-clang-format.html) to learn how to create a `.clang-tidy`
+   file.
 
 **Note:** This plugin requires `clang-tidy` __1.0__ or later.
 
@@ -68,6 +72,20 @@ The plugin **will not work** if this setting is not present.
 Remember: header files are never compiled. Therefore, **header files are not
 in the compilation database** (by default). So, **clang-tidy will not work with
 header files**. You may try to use [this python package][compdb] to enhance your existing compile_commands.json with additional header files.
+
+## Usage
+Upon opening a suitable file, and given that the compilation database as well
+as the `.clang-tidy` file are present in the right locations, SublimeLinter
+will run the clang-tidy linter. Note that this means that the source file is
+being compiled by clang-tidy. So it may take a while before messages start to
+show up.
+Since clang-tidy works on source files, the clang-tidy linter will only run when
+you open a source file or when you save a source file. The clang-tidy linter
+**will not lint when you edit the file**. It will only lint **during load and
+save**.
+
+## Recommended Other Plugins
+- [Clang Format](https://packagecontrol.io/packages/Clang%20Format)
 
 ## Contributing
 If you would like to contribute enhancements or fixes, please do the following:
