@@ -19,6 +19,7 @@ $ brew install llvm  # OSX
 ```bash
 $ sudo apt install clang-tidy  # Ubuntu 16.04
 ```
+   This plugin is untested on Windows.
 2. Make sure you have a **compilation database** for your project (see the
    section *Settings*)
 3. Make sure you have a `.clang-tidy` configuration file for your project.
