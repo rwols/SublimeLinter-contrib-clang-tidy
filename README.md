@@ -12,13 +12,17 @@ SublimeLinter 3 must be installed in order to use this plugin. If SublimeLinter 
 Before using this plugin, you must ensure that `clang-tidy` is installed on your system. To install `clang-tidy`, do the following:
 
 1. Install `clang-tidy` by typing the following in a terminal:
-```bash
-$ brew install llvm  # OSX
-```
+
+    ```bash
+    $ brew install llvm  # OSX
+    ```
+
    or:
-```bash
-$ sudo apt install clang-tidy  # Ubuntu 16.04
-```
+
+    ```bash
+    $ sudo apt install clang-tidy  # Ubuntu 16.04
+    ```
+
    This plugin is untested on Windows.
 
 2. Make sure you have a **compilation database** for your project (see the
