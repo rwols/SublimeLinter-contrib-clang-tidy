@@ -18,7 +18,6 @@ from SublimeLinter.lint import Linter, util
 class ClangTidy(Linter):
     """Provides an interface to clang-tidy."""
 
-    syntax = ('c', 'c++', 'objective-c', 'objective-c++')
     executable = 'clang-tidy'
     version_args = '-version'
     version_re = r'(?P<version>\d+\.\d+\.\d+)'
@@ -32,14 +31,15 @@ class ClangTidy(Linter):
     line_col_base = (1, 1)
     tempfile_suffix = '-'
     error_stream = util.STREAM_BOTH
-    selectors = {}
     word_re = None
-    defaults = {}
     inline_settings = None
     inline_overrides = None
     comment_re = None
     config_file = ('.clang-tidy')
     word_re = r'^([-\w:#]+)'
+    defaults = {
+        'selector': 'source.c, source.c++, source.objc, source.objc++',
+    }
 
     def cmd(self):
         """Return the actual command to invoke."""
