@@ -19,9 +19,6 @@ class ClangTidy(Linter):
     """Provides an interface to clang-tidy."""
 
     executable = 'clang-tidy'
-    version_args = '-version'
-    version_re = r'(?P<version>\d+\.\d+\.\d+)'
-    version_requirement = '>= 3.0'
     regex = (
         r'^.+?:(?P<line>\d+):(?P<col>\d+): '
         r'(?:(?P<error>error)|(?P<warning>warning)): '
@@ -32,9 +29,6 @@ class ClangTidy(Linter):
     tempfile_suffix = '-'
     error_stream = util.STREAM_BOTH
     word_re = None
-    inline_settings = None
-    inline_overrides = None
-    comment_re = None
     config_file = ('.clang-tidy')
     word_re = r'^([-\w:#]+)'
     defaults = {
