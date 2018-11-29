@@ -58,6 +58,7 @@ class ClangTidy(Linter):
                     "-quiet",
                     "-p={}".format(compile_commands),
                     "-config=",
+                    "${args}",
                     "$file"]
         else:
             print("SublimeLinter-contrib-clang-tidy: error: "
