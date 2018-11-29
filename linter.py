@@ -58,7 +58,7 @@ class ClangTidy(Linter):
                     "-quiet",
                     "-p={}".format(compile_commands),
                     "-config=",
-                    self.view.file_name()]
+                    "$file"]
         else:
             print("SublimeLinter-contrib-clang-tidy: error: "
                   '"{}" is not a compilation database.'.format(compdb))
