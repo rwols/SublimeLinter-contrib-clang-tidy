@@ -12,7 +12,7 @@
 
 import os
 import sublime
-from SublimeLinter.lint import Linter, util
+from SublimeLinter.lint import Linter
 
 
 class ClangTidy(Linter):
@@ -24,12 +24,7 @@ class ClangTidy(Linter):
         r'(?:(?P<error>error)|(?P<warning>warning)): '
         r'(?P<message>.+)'
     )
-    multiline = False
-    line_col_base = (1, 1)
     tempfile_suffix = '-'
-    error_stream = util.STREAM_BOTH
-    word_re = None
-    config_file = ('.clang-tidy')
     word_re = r'^([-\w:#]+)'
     defaults = {
         'selector': 'source.c, source.c++, source.objc, source.objc++',
