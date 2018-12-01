@@ -10,10 +10,13 @@
 
 """This module exports the ClangTidy plugin class."""
 
+import logging
 import os
 import re
 import sublime
 from SublimeLinter.lint import Linter
+
+logger = logging.getLogger('SublimeLinter.clang-tidy')
 
 
 class ClangTidy(Linter):
@@ -36,9 +39,8 @@ class ClangTidy(Linter):
         settings = self.view.settings()
         compile_commands = settings.get("compile_commands", "")
         if not compile_commands:
-            print("SublimeLinter-contrib-clang-tidy: error: no "
-                  '"compile_commands" key present in the settings of the '
-                  "view.")
+            logger.error('No "compile_commands" key present in the settings '
+                         'of the view.')
             return [self.executable, "-version"]
         vars = self.view.window().extract_variables()
         compile_commands = sublime.expand_variables(compile_commands, vars)
@@ -51,8 +53,7 @@ class ClangTidy(Linter):
                     "${args}",
                     "$file"]
         else:
-            print("SublimeLinter-contrib-clang-tidy: error: "
-                  '"{}" is not a compilation database.'.format(compdb))
+            logger.error('"{}" is not a compilation database.'.format(compdb))
             return [self.executable, "-version"]
 
     def on_stderr(self, stderr):
@@ -64,4 +65,4 @@ class ClangTidy(Linter):
         # show any remaining error
         if stderr:
             self.notify_failure()
-            print("SublimeLinter-contrib-clang-tidy: error: " + stderr)
+            logger.error(stderr)
