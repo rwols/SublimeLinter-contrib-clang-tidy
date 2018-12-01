@@ -11,6 +11,7 @@
 """This module exports the ClangTidy plugin class."""
 
 import os
+import re
 import sublime
 from SublimeLinter.lint import Linter
 
@@ -53,3 +54,14 @@ class ClangTidy(Linter):
             print("SublimeLinter-contrib-clang-tidy: error: "
                   '"{}" is not a compilation database.'.format(compdb))
             return [self.executable, "-version"]
+
+    def on_stderr(self, stderr):
+        """Filter the output on stderr for actual errors."""
+        # Ignore any standard messages. Everything else results in an error.
+        stderr = re.sub(r'^\d+.+(warning|error).+generated\.\n', '', stderr)
+        stderr = re.sub(r'^Error while processing .+\.\n', '', stderr)
+
+        # show any remaining error
+        if stderr:
+            self.notify_failure()
+            print("SublimeLinter-contrib-clang-tidy: error: " + stderr)
