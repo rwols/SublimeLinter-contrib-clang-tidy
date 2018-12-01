@@ -24,7 +24,7 @@ class ClangTidy(Linter):
 
     executable = 'clang-tidy'
     regex = (
-        r'^.+?:(?P<line>\d+):(?P<col>\d+): '
+        r'(^.+?:(?P<line>\d+):(?P<col>\d+): )?'
         r'(?:(?P<error>error)|(?P<warning>warning)): '
         r'(?P<message>.+)'
     )
@@ -66,3 +66,15 @@ class ClangTidy(Linter):
         if stderr:
             self.notify_failure()
             logger.error(stderr)
+
+    def split_match(self, match):
+        """Return the components of the error message."""
+        match, line, col, error, warning, message, near = \
+            super().split_match(match)
+
+        # if the line could not be extracted from the output we set it to the
+        # first line to show the message in the error pane
+        if line is None:
+            line = 0
+
+        return match, line, col, error, warning, message, near
