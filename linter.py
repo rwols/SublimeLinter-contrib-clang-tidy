@@ -58,6 +58,13 @@ class ClangTidy(Linter):
 
     def on_stderr(self, stderr):
         """Filter the output on stderr for actual errors."""
+        # silently log errors about a missing compile command because otherwise
+        # the error pane would pop up for every header file
+        if re.match(r'^Skipping .+\. Compile command not found\.', stderr):
+            self.notify_failure()
+            logger.info(stderr)
+            return
+
         # Ignore any standard messages. Everything else results in an error.
         stderr = re.sub(r'^\d+.+(warning|error).+generated\.\n', '', stderr)
         stderr = re.sub(r'^Error while processing .+\.\n', '', stderr)
