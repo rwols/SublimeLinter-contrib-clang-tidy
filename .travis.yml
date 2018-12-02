@@ -1,11 +1,7 @@
 language: python
 python:
   - "3.3"
-# command to install dependencies
 install:
-  - pip install flake8
-  - pip install pydocstyle
-# command to run tests
+  - pip install flake8==3.5.0
 script:
   - flake8 . --max-line-length=80
-  - pydocstyle . --add-ignore=D202
