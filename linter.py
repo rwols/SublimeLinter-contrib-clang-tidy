@@ -10,45 +10,38 @@
 
 """This module exports the ClangTidy plugin class."""
 
+import logging
 import os
+import re
 import sublime
-from SublimeLinter.lint import Linter, util
+from SublimeLinter.lint import Linter
+
+logger = logging.getLogger('SublimeLinter.clang-tidy')
 
 
 class ClangTidy(Linter):
     """Provides an interface to clang-tidy."""
 
-    syntax = ('c', 'c++', 'objective-c', 'objective-c++')
     executable = 'clang-tidy'
-    version_args = '-version'
-    version_re = r'(?P<version>\d+\.\d+\.\d+)'
-    version_requirement = '>= 3.0'
     regex = (
-        r'^.+?:(?P<line>\d+):(?P<col>\d+): '
+        r'(^.+?:(?P<line>\d+):(?P<col>\d+): )?'
         r'(?:(?P<error>error)|(?P<warning>warning)): '
         r'(?P<message>.+)'
     )
-    multiline = False
-    line_col_base = (1, 1)
     tempfile_suffix = '-'
-    error_stream = util.STREAM_BOTH
-    selectors = {}
-    word_re = None
-    defaults = {}
-    inline_settings = None
-    inline_overrides = None
-    comment_re = None
-    config_file = ('.clang-tidy')
     word_re = r'^([-\w:#]+)'
+    defaults = {
+        'selector': 'source.c, source.c++, source.objc, source.objc++',
+    }
 
     def cmd(self):
         """Return the actual command to invoke."""
         settings = self.view.settings()
         compile_commands = settings.get("compile_commands", "")
         if not compile_commands:
-            print("SublimeLinter-contrib-clang-tidy: error: no "
-                  '"compile_commands" key present in the settings of the '
-                  "view.")
+            self.notify_failure()
+            logger.info('No "compile_commands" key present in the settings '
+                        'of the view.')
             return [self.executable, "-version"]
         vars = self.view.window().extract_variables()
         compile_commands = sublime.expand_variables(compile_commands, vars)
@@ -58,8 +51,38 @@ class ClangTidy(Linter):
                     "-quiet",
                     "-p={}".format(compile_commands),
                     "-config=",
-                    self.view.file_name()]
+                    "${args}",
+                    "$file"]
         else:
-            print("SublimeLinter-contrib-clang-tidy: error: "
-                  '"{}" is not a compilation database.'.format(compdb))
+            logger.error('"{}" is not a compilation database.'.format(compdb))
             return [self.executable, "-version"]
+
+    def on_stderr(self, stderr):
+        """Filter the output on stderr for actual errors."""
+        # silently log errors about a missing compile command because otherwise
+        # the error pane would pop up for every header file
+        if re.match(r'^Skipping .+\. Compile command not found\.', stderr):
+            self.notify_failure()
+            logger.info(stderr)
+            return
+
+        # Ignore any standard messages. Everything else results in an error.
+        stderr = re.sub(r'^\d+.+(warning|error).+generated\.\n', '', stderr)
+        stderr = re.sub(r'^Error while processing .+\.\n', '', stderr)
+
+        # show any remaining error
+        if stderr:
+            self.notify_failure()
+            logger.error(stderr)
+
+    def split_match(self, match):
+        """Return the components of the error message."""
+        match, line, col, error, warning, message, near = \
+            super().split_match(match)
+
+        # if the line could not be extracted from the output we set it to the
+        # first line to show the message in the error pane
+        if line is None:
+            line = 0
+
+        return match, line, col, error, warning, message, near
