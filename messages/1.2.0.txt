@@ -1,0 +1,2 @@
+- Show output from clang-tidy for included files (@mb1248)
+- Fix the duplication of the error type in the panel
