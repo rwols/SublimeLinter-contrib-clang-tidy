@@ -25,7 +25,7 @@ class ClangTidy(Linter):
     executable = 'clang-tidy'
     regex = (
         r'(^(?P<filename>.+?):(?P<line>\d+):(?P<col>\d+): )?'
-        r'(?:(?P<error>error)|(?P<warning>warning)): '
+        r'(?P<error_type>(?:error|warning)): '
         r'(?P<message>.+)'
     )
     tempfile_suffix = '-'
