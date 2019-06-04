@@ -69,7 +69,7 @@ following entry to your `.sublime-project`**:
     "settings":
     {
         // ...
-        "compile_commands": "${project_path}/PATH/TO/YOUR/BUILD/DIR"
+        "SublimeLinter.linters.clangtidy.compile_commands": "${project_path}/PATH/TO/YOUR/BUILD/DIR"
         // ...
     }
 }
