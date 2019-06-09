@@ -36,12 +36,19 @@ class ClangTidy(Linter):
 
     def cmd(self):
         """Return the actual command to invoke."""
-        settings = self.view.settings()
-        compile_commands = settings.get("compile_commands", "")
+
+        # check the linter settings for the path to the compile_commands file
+        settings = self.get_view_settings()
+        compile_commands = settings.get("compile_commands")
+        if not compile_commands:
+            # for backwards compatibility check the view settings directly
+            settings = self.view.settings()
+            compile_commands = settings.get("compile_commands", "")
+
         if not compile_commands:
             self.notify_failure()
-            logger.info('No "compile_commands" key present in the settings '
-                        'of the view.')
+            logger.info('No "compile_commands" key present in the linter '
+                        'settings. Please check your project settings.')
             return [self.executable, "-version"]
         vars = self.view.window().extract_variables()
         compile_commands = sublime.expand_variables(compile_commands, vars)
