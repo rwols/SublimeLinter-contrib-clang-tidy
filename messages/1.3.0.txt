@@ -1,0 +1,9 @@
+- The compile_commands setting has been implemented as a linter setting:
+
+    This makes it more consistent with the other possible settings and also
+    allows to access the home directory by using ~ in the path.
+
+    To use the new setting, edit your project settings and rename the previous
+    "compile_commands" to "SublimeLinter.linters.clangtidy.compile_commands".
+
+    The old setting will still work the same as before.
