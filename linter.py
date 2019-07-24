@@ -22,7 +22,6 @@ logger = logging.getLogger('SublimeLinter.clang-tidy')
 class ClangTidy(Linter):
     """Provides an interface to clang-tidy."""
 
-    executable = 'clang-tidy'
     regex = (
         r'(^(?P<filename>.+?):(?P<line>\d+):(?P<col>\d+): )?'
         r'(?P<error_type>(?:error|warning)): '
@@ -48,12 +47,12 @@ class ClangTidy(Linter):
             self.notify_failure()
             logger.info('No "compile_commands" key present in the linter '
                         'settings. Please check your project settings.')
-            return [self.executable, "-version"]
+            return ["clang-tidy", "-version"]
         vars = self.view.window().extract_variables()
         compile_commands = sublime.expand_variables(compile_commands, vars)
         compdb = os.path.join(compile_commands, "compile_commands.json")
         if os.path.isfile(compdb):
-            return [self.executable,
+            return ["clang-tidy",
                     "-quiet",
                     "-p={}".format(compile_commands),
                     "-config=",
@@ -61,7 +60,7 @@ class ClangTidy(Linter):
                     "$file"]
         else:
             logger.error('"{}" is not a compilation database.'.format(compdb))
-            return [self.executable, "-version"]
+            return ["clang-tidy", "-version"]
 
     def on_stderr(self, stderr):
         """Filter the output on stderr for actual errors."""
