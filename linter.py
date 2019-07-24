@@ -38,8 +38,7 @@ class ClangTidy(Linter):
         """Return the actual command to invoke."""
 
         # check the linter settings for the path to the compile_commands file
-        settings = self.get_view_settings()
-        compile_commands = settings.get("compile_commands")
+        compile_commands = self.settings.get("compile_commands")
         if not compile_commands:
             # for backwards compatibility check the view settings directly
             settings = self.view.settings()
