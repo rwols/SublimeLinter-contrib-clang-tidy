@@ -55,7 +55,6 @@ class ClangTidy(Linter):
             return ["clang-tidy",
                     "-quiet",
                     "-p={}".format(compile_commands),
-                    "-config=",
                     "${args}",
                     "$file"]
         else:
