@@ -1,0 +1,2 @@
+- Removed the config argument when calling clang-tidy to not overwrite the
+    .clang-tidy file
